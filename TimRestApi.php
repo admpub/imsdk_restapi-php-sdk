@@ -994,6 +994,25 @@ class TimRestAPI extends TimRestInterface
 		return $ret;
 	}
 	
+	function group_get_group_member_info_with_filter($group_id, $limit, $offset, $filter_field=[])
+	{
+
+		#构造新消息
+		$msg = array(
+				"GroupId" => $group_id,  
+				"Limit" => $limit,   
+				"Offset" => $offset,
+				'MemberInfoFilter' => $filter_field
+				)
+			;  
+		#将消息序列化为json串
+		$req_data = json_encode($msg);
+	
+		$ret = $this->api("group_open_http_svc", "get_group_member_info", $this->identifier, $this->usersig, $req_data);
+		$ret = json_decode($ret, true);
+		return $ret;
+	}
+
 	function group_modify_group_base_info($group_id, $group_name)
 	{
 	
@@ -1061,6 +1080,24 @@ class TimRestAPI extends TimRestInterface
 		#构造新消息
 		$mem_list = array();
 		array_push($mem_list, $member_id);
+		$msg = array(
+				"GroupId" => $group_id,  
+				"MemberToDel_Account" => $mem_list,
+				"Silence" => $silence
+				);
+		#将消息序列化为json串
+		$req_data = json_encode($msg);
+	
+		$ret = $this->api("group_open_http_svc", "delete_group_member", $this->identifier, $this->usersig, $req_data);
+		$ret = json_decode($ret, true);
+		return $ret;
+	}
+
+	function group_delete_group_members($group_id, $member_ids, $silence)
+	{
+	
+		#构造新消息
+		$mem_list = is_array($member_ids) ? $member_ids : array($member_ids);
 		$msg = array(
 				"GroupId" => $group_id,  
 				"MemberToDel_Account" => $mem_list,
@@ -1418,8 +1455,8 @@ class TimRestAPI extends TimRestInterface
 		$msg = array(
 				"GroupId" => $group_id,
 				"MsgList" => $msg_list,
-            );
-        var_dump($msg);  
+			);
+
 		#将消息序列化为json串
 		$req_data = json_encode($msg);
 
