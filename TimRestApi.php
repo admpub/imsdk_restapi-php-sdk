@@ -46,7 +46,7 @@ class TimRestAPI extends TimRestInterface
 	 * $param bool $print_flag 是否打印请求，默认为打印
 	 * @return string $out 返回的签名字符串
 	 */
-	public function api($service_name, $cmd_name, $identifier, $usersig, $req_data, $print_flag = true)
+	public function api($service_name, $cmd_name, $identifier, $usersig, $req_data, $print_flag = null)
 	{   
 		//$req_tmp用来做格式化输出
 		$req_tmp = json_decode($req_data, true);
