@@ -136,7 +136,8 @@ class TLSSigAPI {
      * @param uint $expire usersig有效期 默认为180天
      * @return string 生成的UserSig 失败时为false
      */
-    public function genSig($identifier, $expire = 180 * 24 * 3600) {
+    public function genSig($identifier, $expire = null) {
+        if($expire===null) $expire = 180 * 24 * 3600;
         $json = Array(
             'TLS.account_type' => '0',
             'TLS.identifier' => (string) $identifier,
